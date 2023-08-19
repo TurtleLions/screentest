@@ -6,7 +6,23 @@ from PIL import ImageGrab, Image, ImageTk
 import tkinter as tk
 img_height, img_width = 1440, 2560
 n_channels = 4
-transparent_img = np.zeros((img_height, img_width, n_channels))
+transparent_img = np.zeros((img_height, img_width, n_channels), dtype=np.uint8)
+
+# root = tk.Tk()
+# root.image = ImageTk.PhotoImage(file="hi.jpg")
+# label = tk.Label(root, image=root.image, bg='white')
+# root.overrideredirect(True)
+# root.geometry("2560x1440")
+# root.lift()
+# root.wm_attributes("-topmost", True)
+# root.wm_attributes("-disabled", True)
+# root.wm_attributes("-transparentcolor", "white")
+# label.pack()
+# def update(num):
+#     root.image = ImageTk.PhotoImage(file="hi.jpg")
+#     root.after(1000, update)
+# root.after(1000, update)
+
 
 # define some constants
 CONFIDENCE_THRESHOLD = 0.8
@@ -44,7 +60,8 @@ while True:
                 cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 8)
     cv2.imwrite("hi.jpg", transparent_img)
     # show the frame to our screen
-    #cv2.imshow("Python Window", transparent_img)
+    #cv2.imshow("Python Window", res)
     #if cv2.waitKey(1) == ord("q"):
     #    break
 #cv2.destroyAllWindows()
+label.mainloop()
