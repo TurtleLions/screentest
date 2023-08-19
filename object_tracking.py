@@ -4,6 +4,8 @@ import cv2
 import numpy as np
 from PIL import ImageGrab, Image, ImageTk
 import tkinter as tk
+
+
 img_height, img_width = 1440, 2560
 n_channels = 4
 transparent_img = np.zeros((img_height, img_width, n_channels), dtype=np.uint8)
@@ -14,8 +16,9 @@ from tkinter import Tk, Canvas, PhotoImage, NW
 #0,1194
 
 root = Tk()
-root.geometry("244x245+0+1194")
-root.attributes('-transparentcolor','#000000')
+
+root.attributes('-transparentcolor','white')
+root.attributes('-fullscreen',True)
 root.attributes('-topmost', 'true')
 # Canvas
 canvas = Canvas(root, width=2560, height=1440)
@@ -59,11 +62,6 @@ def update():
     # show the time it took to process 1 frame
     total = (end - start).total_seconds()
     print(f"Time to process 1 frame: {total * 1000:.0f} milliseconds")
-
-    # calculate the frame per second and draw it on the frame
-    fps = f"FPS: {1 / total:.2f}"
-    #cv2.putText(screen, fps, (50, 50),
-    #            cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 8)
     cv2.imwrite("hi.jpg", transparent_img)
     # show the frame to our screen
     img= Image.open("hi.jpg")
@@ -74,7 +72,8 @@ def update():
     canvas.create_image(0, 0, anchor=NW, image=photoim)
     canvas.update()
     root.attributes('-topmost', 'true')
-    root.after(1000,update)
+    root.after(500,update)
+    
 #cv2.destroyAllWindows()
 root.after(1000,update)
 root.mainloop()
