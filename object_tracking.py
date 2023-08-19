@@ -8,20 +8,21 @@ img_height, img_width = 1440, 2560
 n_channels = 4
 transparent_img = np.zeros((img_height, img_width, n_channels), dtype=np.uint8)
 
-# root = tk.Tk()
-# root.image = ImageTk.PhotoImage(file="hi.jpg")
-# label = tk.Label(root, image=root.image, bg='white')
-# root.overrideredirect(True)
-# root.geometry("2560x1440")
-# root.lift()
-# root.wm_attributes("-topmost", True)
-# root.wm_attributes("-disabled", True)
-# root.wm_attributes("-transparentcolor", "white")
-# label.pack()
-# def update(num):
-#     root.image = ImageTk.PhotoImage(file="hi.jpg")
-#     root.after(1000, update)
-# root.after(1000, update)
+from tkinter import Tk, Canvas, PhotoImage, NW
+
+root = Tk()
+
+root.attributes('-transparentcolor','#000000')
+
+# Canvas
+canvas = Canvas(root, width=2560, height=1440)
+canvas.pack()
+
+# Image
+img = ImageTk.PhotoImage(image=Image.fromarray(transparent_img))
+
+# Positioning the Image inside the canvas
+canvas.create_image(0, 0, anchor=NW, image=img)
 
 
 # define some constants
@@ -30,14 +31,14 @@ GREEN = (0, 255, 0)
 
 # load the pre-trained YOLOv8n model
 model = YOLO("best.pt")
-while True:
+def update():
+    global photoim
     # start time to compute the fps
     start = datetime.datetime.now()
     screen = np.array(ImageGrab.grab(bbox=(0,0,2560,1440)))
     screen = screen[:, :, ::-1].copy()
     #cv2.imshow('Python Window', screen)
-    transparent_img = np.zeros((img_height, img_width, n_channels))
-    
+    transparent_img = np.zeros((img_height, img_width, n_channels), dtype=np.uint8)
     # run the YOLO model on the frame
     detections = model.predict(screen)
     result = detections[0]
@@ -60,8 +61,10 @@ while True:
                 cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 8)
     cv2.imwrite("hi.jpg", transparent_img)
     # show the frame to our screen
-    #cv2.imshow("Python Window", res)
-    #if cv2.waitKey(1) == ord("q"):
-    #    break
+    photoim = ImageTk.PhotoImage(Image.open("hi.jpg"))
+    canvas.create_image(0, 0, anchor=NW, image=photoim)
+    canvas.update()
+    root.after(1000,update)
 #cv2.destroyAllWindows()
-label.mainloop()
+root.after(1000,update)
+root.mainloop()
