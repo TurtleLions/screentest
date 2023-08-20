@@ -41,8 +41,6 @@ def update():
     global photoim
     # start time to compute the fps
     start = datetime.datetime.now()
-    #screen = np.array(ImageGrab.grab(bbox=(0,0,2560,1440)))
-    #screen = screen[:, :, ::-1].copy()
     screenshot = ImageGrab.grab(bbox=(0,1194,244,1439))
     screenshot.save("ss.png")
     #cv2.imshow('Python Window', screen)
@@ -55,6 +53,7 @@ def update():
         masks = result.masks
         probs = result.probs
         boxarray = boxes.cpu().xyxy.numpy()
+        #loop over all boxes and write rectangles over them
         for box in boxarray:
           x1, y1, x2, y2 = [
             round(x) for x in box.tolist()
@@ -72,7 +71,6 @@ def update():
     np_img = np.array(img)
     imagemask = cv2.inRange(np_img, (0,0,0), (50,50,50))
     photoim =  ImageTk.PhotoImage(image=Image.fromarray(imagemask))
-    #photoim = ImageTk.PhotoImage(Image.open("hi.jpg"))
     canvas.create_image(0, 0, anchor=NW, image=photoim)
     canvas.update()
     root.attributes('-topmost', 'true')
