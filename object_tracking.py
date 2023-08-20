@@ -75,5 +75,5 @@ def update():
     root.after(500,update)
     
 #cv2.destroyAllWindows()
-root.after(1000,update)
+root.after(500,update)
 root.mainloop()
