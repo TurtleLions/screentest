@@ -48,14 +48,18 @@ def update():
     #cv2.imshow('Python Window', screen)
     transparent_img = np.zeros((img_height, img_width, n_channels), dtype=np.uint8)
     # run the YOLO model on the frame
-    detections = model.predict("ss.png")
-    result = detections[0]
+    detections = model.predict("ss.png",stream=True)
     # loop over the detections
-    for box in result.boxes:
-        x1, y1, x2, y2 = [
-          round(x) for x in box.xyxy[0].tolist()
-        ]
-        cv2.rectangle(transparent_img, (x1, y1+1194) , (x2, y2+1194), GREEN, 2)
+    for result in detections:
+        boxes = result.boxes
+        masks = result.masks
+        probs = result.probs
+        boxarray = boxes.cpu().xyxy.numpy()
+        for box in boxarray:
+          x1, y1, x2, y2 = [
+            round(x) for x in box.tolist()
+          ]
+          cv2.rectangle(transparent_img, (x1, y1+1194) , (x2, y2+1194), GREEN, 2)
 
     # end time to compute the fps
     end = datetime.datetime.now()
