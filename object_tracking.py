@@ -66,9 +66,9 @@ def update():
     # show the time it took to process 1 frame
     total = (end - start).total_seconds()
     print(f"Time to process 1 frame: {total * 1000:.0f} milliseconds")
-    cv2.imwrite("hi.jpg", transparent_img)
+    cv2.imwrite("overlayimg.jpg", transparent_img)
     # show the frame to our screen
-    img= Image.open("hi.jpg")
+    img= Image.open("overlayimg.jpg")
     np_img = np.array(img)
     imagemask = cv2.inRange(np_img, (0,0,0), (50,50,50))
     photoim =  ImageTk.PhotoImage(image=Image.fromarray(imagemask))
