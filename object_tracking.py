@@ -15,6 +15,8 @@ from tkinter import Tk, Canvas, PhotoImage, NW
 #244L x 245H
 #0,1194
 
+
+
 root = Tk()
 
 root.attributes('-transparentcolor','white')
@@ -27,6 +29,10 @@ canvas.pack()
 # Image
 img = ImageTk.PhotoImage(image=Image.fromarray(transparent_img))
 
+whiteimg = np.zeros([1440,2560,3],dtype=np.uint8)
+whiteimg.fill(255)
+whitephotoim =  ImageTk.PhotoImage(image=Image.fromarray(whiteimg))
+
 # Positioning the Image inside the canvas
 canvas.create_image(0, 0, anchor=NW, image=img)
 
@@ -38,11 +44,21 @@ RED = (0, 0, 255)
 
 # load the pre-trained YOLOv8n model
 model = YOLO("best.pt")
+
+x = 0
 def update():
+    global x
+    print(x)
     global photoim
     # start time to compute the fps
     start = datetime.datetime.now()
+    canvas.create_image(0, 0, anchor=NW, image=whitephotoim)
+    canvas.update()
+    root.attributes('-topmost', 'true')
     screenshot = ImageGrab.grab(bbox=(0,1194,244,1439))
+    if(x==1):
+      canvas.create_image(0, 0, anchor=NW, image=photoim)
+      canvas.update()
     screenshot.save("ss.png")
     #cv2.imshow('Python Window', screen)
     transparent_img = np.zeros((img_height, img_width, n_channels), dtype=np.uint8)
@@ -80,6 +96,8 @@ def update():
     canvas.create_image(0, 0, anchor=NW, image=photoim)
     canvas.update()
     root.attributes('-topmost', 'true')
+    if(x==0):
+       x=1
     root.after(1,update)
     
 #cv2.destroyAllWindows()
