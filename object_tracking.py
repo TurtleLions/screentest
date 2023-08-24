@@ -34,6 +34,7 @@ canvas.create_image(0, 0, anchor=NW, image=img)
 # define some constants
 CONFIDENCE_THRESHOLD = 0.8
 GREEN = (0, 255, 0)
+RED = (0, 0, 255)
 
 # load the pre-trained YOLOv8n model
 model = YOLO("best.pt")
@@ -53,12 +54,16 @@ def update():
         masks = result.masks
         probs = result.probs
         boxarray = boxes.cpu().xyxy.numpy()
+        clsarray = boxes.cpu().cls.numpy()
         #loop over all boxes and write rectangles over them
-        for box in boxarray:
+        for index in range(0, len(boxarray)):
           x1, y1, x2, y2 = [
-            round(x) for x in box.tolist()
+            round(x) for x in boxarray[index].tolist()
           ]
-          cv2.rectangle(transparent_img, (x1, y1+1194) , (x2, y2+1194), GREEN, 2)
+          if(clsarray[index]==0): 
+            cv2.rectangle(transparent_img, (x1, y1+1194) , (x2, y2+1194), RED, 2)
+          if(clsarray[index]==1):
+            cv2.rectangle(transparent_img, (x1, y1+1194) , (x2, y2+1194), GREEN, 2)
 
     # end time to compute the fps
     end = datetime.datetime.now()
@@ -70,12 +75,13 @@ def update():
     img= Image.open("overlayimg.jpg")
     np_img = np.array(img)
     imagemask = cv2.inRange(np_img, (0,0,0), (50,50,50))
-    photoim =  ImageTk.PhotoImage(image=Image.fromarray(imagemask))
+    np_img[imagemask>0]=[255,255,255]
+    photoim =  ImageTk.PhotoImage(image=Image.fromarray(np_img))
     canvas.create_image(0, 0, anchor=NW, image=photoim)
     canvas.update()
     root.attributes('-topmost', 'true')
-    root.after(500,update)
+    root.after(1,update)
     
 #cv2.destroyAllWindows()
-root.after(500,update)
+root.after(1,update)
 root.mainloop()
