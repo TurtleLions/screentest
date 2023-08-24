@@ -48,16 +48,16 @@ model = YOLO("best.pt")
 x = 0
 def update():
     global x
-    print(x)
     global photoim
     # start time to compute the fps
     start = datetime.datetime.now()
     canvas.create_image(0, 0, anchor=NW, image=whitephotoim)
     canvas.update()
     root.attributes('-topmost', 'true')
-    screenshot = ImageGrab.grab(bbox=(0,1194,244,1439))
     if(x==1):
       canvas.create_image(0, 0, anchor=NW, image=photoim)
+    screenshot = ImageGrab.grab(bbox=(0,1194,244,1439))
+    if(x==1):
       canvas.update()
     screenshot.save("ss.png")
     #cv2.imshow('Python Window', screen)
