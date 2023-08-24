@@ -55,16 +55,10 @@ def update():
     canvas.create_image(0, 0, anchor=NW, image=whitephotoim)
     canvas.update()
     root.attributes('-topmost', 'true')
-<<<<<<< HEAD
     if(x==1):
       canvas.create_image(0, 0, anchor=NW, image=photoim)
     screenshot = ImageGrab.grab(bbox=(0,1194,244,1439))
     if(x==1):
-=======
-    screenshot = ImageGrab.grab(bbox=(0,1194,244,1439))
-    if(x==1):
-      canvas.create_image(0, 0, anchor=NW, image=photoim)
->>>>>>> 29697acb40e814ca02d222132d09e9a49f0e1616
       canvas.update()
     screenshot.save("ss.png")
     #cv2.imshow('Python Window', screen)
