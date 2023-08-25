@@ -93,6 +93,7 @@ def update():
     np_img = np.array(img)
     imagemask = cv2.inRange(np_img, (0,0,0), (50,50,50))
     np_img[imagemask>0]=[255,255,255]
+    cv2.rectangle(np_img,(855,0),(1100,255),(0,0,0),2)
     photoim =  ImageTk.PhotoImage(image=Image.fromarray(np_img))
     canvas.create_image(0, 0, anchor=NW, image=photoim)
     canvas.update()
