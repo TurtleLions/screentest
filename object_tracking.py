@@ -31,6 +31,7 @@ img = ImageTk.PhotoImage(image=Image.fromarray(transparent_img))
 
 whiteimg = np.zeros([1440,2560,3],dtype=np.uint8)
 whiteimg.fill(255)
+cv2.rectangle(whiteimg,(855,0),(1100,255),(255,0,0),2)
 whitephotoim =  ImageTk.PhotoImage(image=Image.fromarray(whiteimg))
 
 # Positioning the Image inside the canvas
@@ -63,6 +64,7 @@ def update():
     screenshot.save("ss.png")
     #cv2.imshow('Python Window', screen)
     transparent_img = np.zeros((img_height, img_width, n_channels), dtype=np.uint8)
+    cv2.rectangle(transparent_img,(855,0),(1100,255),(255,0,0),2)
     # run the YOLO model on the frame
     detections = model.predict("ss.png",stream=True)
     # loop over the detections
@@ -93,7 +95,6 @@ def update():
     np_img = np.array(img)
     imagemask = cv2.inRange(np_img, (0,0,0), (50,50,50))
     np_img[imagemask>0]=[255,255,255]
-    cv2.rectangle(np_img,(855,0),(1100,255),(0,0,0),2)
     photoim =  ImageTk.PhotoImage(image=Image.fromarray(np_img))
     canvas.create_image(0, 0, anchor=NW, image=photoim)
     canvas.update()
