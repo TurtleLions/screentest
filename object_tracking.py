@@ -5,6 +5,10 @@ import numpy as np
 from PIL import ImageGrab, Image, ImageTk
 import tkinter as tk
 
+mapoffsetx = 800
+mapoffsety = 0
+mapsize = 245
+
 
 img_height, img_width = 1440, 2560
 n_channels = 4
@@ -31,7 +35,7 @@ img = ImageTk.PhotoImage(image=Image.fromarray(transparent_img))
 
 whiteimg = np.zeros([1440,2560,3],dtype=np.uint8)
 whiteimg.fill(255)
-cv2.rectangle(whiteimg,(855,0),(1100,255),(255,0,0),2)
+cv2.rectangle(whiteimg,(mapoffsetx,mapoffsety),(mapoffsetx+mapsize,mapoffsety+mapsize),(255,0,0),2)
 whitephotoim =  ImageTk.PhotoImage(image=Image.fromarray(whiteimg))
 
 # Positioning the Image inside the canvas
@@ -53,18 +57,18 @@ def update():
     global photoim
     # start time to compute the fps
     start = datetime.datetime.now()
-    canvas.create_image(0, 0, anchor=NW, image=whitephotoim)
-    canvas.update()
-    root.attributes('-topmost', 'true')
-    if(x==1):
-      canvas.create_image(0, 0, anchor=NW, image=photoim)
+    # canvas.create_image(0, 0, anchor=NW, image=whitephotoim)
+    # canvas.update()
+    # root.attributes('-topmost', 'true')
+    # # if(x==1):
+    #   canvas.create_image(0, 0, anchor=NW, image=photoim)
     screenshot = ImageGrab.grab(bbox=(0,1194,244,1439))
-    if(x==1):
-      canvas.update()
+    # if(x==1):
+    #   canvas.update()
     screenshot.save("ss.png")
     #cv2.imshow('Python Window', screen)
     transparent_img = np.zeros((img_height, img_width, n_channels), dtype=np.uint8)
-    cv2.rectangle(transparent_img,(855,0),(1100,255),(255,0,0),2)
+    cv2.rectangle(transparent_img,(mapoffsetx,mapoffsety),(mapoffsetx+mapsize,mapoffsety+mapsize),(255,0,0),2)
     # run the YOLO model on the frame
     detections = model.predict("ss.png",stream=True)
     # loop over the detections
@@ -80,9 +84,9 @@ def update():
             round(x) for x in boxarray[index].tolist()
           ]
           if(clsarray[index]==0): 
-            cv2.rectangle(transparent_img, (x1+855, y1) , (x2+855, y2), RED, 2)
+            cv2.rectangle(transparent_img, (x1+mapoffsetx, y1+mapoffsety) , (x2+mapoffsetx, y2+mapoffsety), RED, 2)
           if(clsarray[index]==1):
-            cv2.rectangle(transparent_img, (x1+855, y1) , (x2+855, y2), GREEN, 2)
+            cv2.rectangle(transparent_img, (x1+mapoffsetx, y1+mapoffsety) , (x2+mapoffsetx, y2+mapoffsety), GREEN, 2)
 
     # end time to compute the fps
     end = datetime.datetime.now()
