@@ -80,9 +80,9 @@ def update():
             round(x) for x in boxarray[index].tolist()
           ]
           if(clsarray[index]==0): 
-            cv2.rectangle(transparent_img, (x1, y1+1194) , (x2, y2+1194), RED, 2)
+            cv2.rectangle(transparent_img, (x1+855, y1) , (x2+855, y2), RED, 2)
           if(clsarray[index]==1):
-            cv2.rectangle(transparent_img, (x1, y1+1194) , (x2, y2+1194), GREEN, 2)
+            cv2.rectangle(transparent_img, (x1+855, y1) , (x2+855, y2), GREEN, 2)
 
     # end time to compute the fps
     end = datetime.datetime.now()
