@@ -57,16 +57,8 @@ def update():
     global photoim
     # start time to compute the fps
     start = datetime.datetime.now()
-    # canvas.create_image(0, 0, anchor=NW, image=whitephotoim)
-    # canvas.update()
-    # root.attributes('-topmost', 'true')
-    # # if(x==1):
-    #   canvas.create_image(0, 0, anchor=NW, image=photoim)
     screenshot = ImageGrab.grab(bbox=(0,1194,244,1439))
-    # if(x==1):
-    #   canvas.update()
     screenshot.save("ss.png")
-    #cv2.imshow('Python Window', screen)
     transparent_img = np.zeros((img_height, img_width, n_channels), dtype=np.uint8)
     cv2.rectangle(transparent_img,(mapoffsetx,mapoffsety),(mapoffsetx+mapsize,mapoffsety+mapsize),(255,0,0),2)
     # run the YOLO model on the frame
@@ -103,8 +95,6 @@ def update():
     canvas.create_image(0, 0, anchor=NW, image=photoim)
     canvas.update()
     root.attributes('-topmost', 'true')
-    if(x==0):
-       x=1
     root.after(1,update)
     
 #cv2.destroyAllWindows()
